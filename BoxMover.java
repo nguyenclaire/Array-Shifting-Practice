@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Collections;
 /**
  * Implement a constructor that initializes the private reference variable pointing to an array
 
@@ -26,36 +27,40 @@ public class BoxMover {
 	}
 	
 	public int[] shift(int n) {
-		
-		int[] temp = new int[arr.length];
-		//right shift positive
-		if(n > 0) {
-			for(int i = 0; i < arr.length; i++) {
-				int newPosition = (i + n) % arr.length;
-				temp[newPosition] = arr[i];
-			}
-			return temp;
+		//shift right if positive
+		if(n > 0){
+			for(int i = 0; i < n; i++){      
+	            int last = arr[arr.length-1];    
+	            for(int j = arr.length-1; j > 0; j--){    
+	                arr[j] = arr[j-1];    
+	            }    
+	            arr[0] = last;
+	        }
+			return arr;
 		}
-		//left shift negative
-		else
-			for(int i = arr.length-1; i > 0; i--) {
-				int leftShift = Math.abs(n);
-				int newPosition = i + (arr.length - leftShift) % arr.length;
-				temp[newPosition] = arr[i];
-			}
-		return temp;
+		//shift left if negative
+		else {
+			int absVal = Math.abs(n);
+			//This outer for loop helps repeat the number of shifts over and over again
+			for(int i = 0; i < absVal; i++){  
+				//Storing the First element
+		         int first = arr[0];
+		         //This inner loop shifts only once
+		         for(int j = 0; j < arr.length-1; j++){  
+		        	arr[j] = arr[j+1];  
+		            }
+		            arr[arr.length - 1] = first;  
+		        }
+			 return arr;
+		}
 	}
 	
 	public int[] reverse() {
-		try {
+		
 		for(int i = 0; i < arr.length / 2; i++) {
 		    int temp = arr[i];
 		    arr[i] = arr[arr.length - i - 1];
 		    arr[arr.length - i - 1] = temp;
-		}
-		}
-		catch(Exception e) {
-			
 		}
 		return arr;
 	}
@@ -66,7 +71,7 @@ public class BoxMover {
 		BoxMover m = new BoxMover(arr);
 		m.reverse();
 		System.out.println("Reverse: " + Arrays.toString(arr));
-		m.shift(5);
+		m.shift(-2);
 		System.out.println("Positive shift right: " + Arrays.toString(arr));
 		m.shift(-1);
 		System.out.println("Negative shift left: " + Arrays.toString(arr));
